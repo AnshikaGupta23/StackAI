@@ -48,6 +48,8 @@ async function generateInterViewReportController(req, res) {
         }
 
         const resumeContent = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText()
+        console.log("Extracted resume text length:", resumeContent.text.length);
+        console.log("Extracted resume text preview:", resumeContent.text.slice(0, 300));
         const { selfDescription, jobDescription, title } = req.body
 
         const interViewReportByAi = await generateInterviewReport({
@@ -62,7 +64,7 @@ async function generateInterViewReportController(req, res) {
             selfDescription,
             jobDescription,
             ...interViewReportByAi,
-            title: title || interViewReportByAi.title
+            title: title || interViewReportByAi.title || jobDescription?.slice(0, 60) || "Untitled Interview Report"
         })
 
         res.status(201).json({

@@ -12,7 +12,8 @@ const Home = () => {
 
     const navigate = useNavigate()
 
-    const handleGenerateReport = async () => {
+    /*   
+     const handleGenerateReport = async () => {
         const resumeFile = resumeInputRef.current.files[ 0 ];
         const formData = new FormData();
     
@@ -30,6 +31,15 @@ const Home = () => {
     const data = await generateReport(formData);
     navigate(`/interview/${data._id}`);
     }
+    */
+   const handleGenerateReport = async () => {
+    const resumeFile = resumeInputRef.current.files[0];
+    const data = await generateReport({ jobDescription, selfDescription, resumeFile });
+    if(!data){
+        return;
+    }
+    navigate(`/interview/${data._id}`);
+   }
 
     if (loading) {
         return (
